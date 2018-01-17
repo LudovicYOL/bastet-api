@@ -5,7 +5,7 @@
     define("DNS", 'mysql:host=localhost;dbname=bastet');
 
     try {
-        $pdo = new PDO(DNS, USER, PASSWORD, array(PDO::ATTR_PERSISTENT => true));
+        $pdo = new PDO(DNS, USER, PASSWORD);
     } 
     catch (Exception $e)
     {
