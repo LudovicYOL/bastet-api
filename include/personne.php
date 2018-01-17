@@ -16,18 +16,20 @@
 
     function getPersonneFromResult($result){
         return array(
+            "login" => $result->LOGIN,
+            "password" => $result->PASSWORD,
             "id" => $result->ID_PERSONNE,
             "nom" => $result->NOM, 
             "prenom" => $result->PRENOM, 
-            "Adresse" => $result->ADRESSE,	
+            "adresse" => $result->ADRESSE,	
             "date_naiss" => $result->DATE_NAISS,
-            "mail" => $result->EMAIL,
+            "email" => $result->EMAIL,
             "telephone" => $result->TELEPHONE,
             "promotion" => $result->PROMOTION,
             "statut" => $result->STATUT);
     }
 
-    function get_list_personne($pdo) { 
+    function getListePersonne($pdo) { 
         $sql = "SELECT * FROM o_personne"; 
         $exe = $pdo->query($sql); 
         $personnes = array(); 
@@ -37,7 +39,7 @@
         return $personnes; 
     }
   
-    function get_personne_by_id($id, $pdo) { 
+    function getPersonneById($id, $pdo) { 
         $sql = "SELECT * FROM o_personne WHERE id_personne = ".$id;    
         $exe = $pdo->query($sql); 
         while($result = $exe->fetch(PDO::FETCH_OBJ)) {
@@ -49,33 +51,78 @@
         return $personne; 
     }
 
+    function getPersonneByNom($nom, $pdo) { 
+        $sql = "SELECT * FROM o_personne WHERE nom = '".$nom."'";    
+        $exe = $pdo->query($sql); 
+        while($result = $exe->fetch(PDO::FETCH_OBJ)) {
+            $personne = getPersonneFromResult($result); 
+        }
+        if($personne == null){
+            throw new NotFoundException("Aucune entité pour nom ". $nom);
+        }
+        return $personne; 
+    }
+
     function validerDonnee($personne){
         if(!property_exists($personne,'nom')){
             throw new ValidationException("Entite invalide : pas de valeur pour 'nom'");
         } 
     }
 
-    function add_personne($personne, $pdo){ 
+    function addPersonne($personne, $pdo){ 
         validerDonnee($personne);
         $sql = "INSERT INTO o_personne (NOM, PRENOM, ADRESSE, EMAIL, TELEPHONE, PROMOTION, STATUT) VALUES ('". $personne->nom ."', '". $personne->prenom ."', '". $personne->adresse ."', '". $personne->email ."', '". $personne->telephone ."', '". $personne->promotion ."', '". $personne->statut ."');";
         $pdo->exec($sql);
         return get_personne_by_id($pdo->lastInsertId(), $pdo);
     }
 
-    function update_personne($id, $personne, $pdo){
+    function updatePersonne($id, $personne, $pdo){
         validerDonnee($personne);
         $sql = "UPDATE o_personne SET NOM = '". $personne->nom ."', PRENOM = '". $personne->prenom ."', ADRESSE = '". $personne->adresse ."', EMAIL = '". $personne->email ."', TELEPHONE = '". $personne->telephone ."', PROMOTION = '". $personne->promotion ."', STATUT = '". $personne->statut ."' WHERE id_personne = ".$id;    
         $pdo->exec($sql);
         return get_personne_by_id($id, $pdo);
     }
 
-    function delete_personne_by_id($id, $pdo) { 
+    function deletePersonneById($id, $pdo) { 
         $sql = "DELETE FROM o_personne WHERE id_personne = ".$id;
         $del = $pdo->exec($sql);
         if($del == 0){
             throw new NotFoundException("Pas de ressource pour l'id : ". $id);
         }
         return true;
+    }
+
+    function gestionPersonne($pdo){
+        $method = $_SERVER['REQUEST_METHOD'];
+        switch($method){
+            case "POST":
+                $content = json_decode(file_get_contents('php://input'));
+                $value = addPersonne($content, $pdo);
+                break;
+            case "GET":
+                if (isset($_GET["id"])){
+                    $value = getPersonneById($_GET["id"], $pdo);
+                }else{
+                    $value = getListePersonne($pdo);
+                }
+                break;
+            case "PUT":
+                if (isset($_GET["id"])){
+                    $content = json_decode(file_get_contents('php://input'));
+                    $value = updatePersonne($_GET["id"], $content, $pdo);
+                }else{
+                    throw new MissingArgumentException("Please, specify the id of the entity to update in the URL.");
+                }
+                break;
+            case "DELETE":
+                if (isset($_GET["id"])){
+                    $value = deletePersonneById($_GET["id"], $pdo); 
+                }else{
+                    throw new MissingArgumentException("Please, specify the id of the entity to delete in the URL.");
+                }
+                break;
+        }
+        return $value;
     }
 
 ?>
