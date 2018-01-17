@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 15 Janvier 2018 à 23:06
+-- Généré le :  Mer 17 Janvier 2018 à 22:40
 -- Version du serveur :  10.1.9-MariaDB
 -- Version de PHP :  5.6.15
 
@@ -97,10 +97,12 @@ INSERT INTO `o_entreprise` (`ID_ENTREPRISE`, `NOM`, `LOCALISATION`, `REGION`, `D
 
 CREATE TABLE `o_personne` (
   `ID_PERSONNE` bigint(20) UNSIGNED NOT NULL,
+  `LOGIN` varchar(255) NOT NULL,
+  `PASSWORD` varchar(255) NOT NULL,
   `NOM` varchar(155) NOT NULL,
   `PRENOM` varchar(155) NOT NULL,
   `ADRESSE` varchar(255) DEFAULT NULL,
-  `DATE_NAISS` date NOT NULL,
+  `DATE_NAISS` date DEFAULT NULL,
   `EMAIL` varchar(155) NOT NULL,
   `TELEPHONE` varchar(10) DEFAULT NULL,
   `PROMOTION` varchar(4) NOT NULL,
@@ -111,10 +113,9 @@ CREATE TABLE `o_personne` (
 -- Contenu de la table `o_personne`
 --
 
-INSERT INTO `o_personne` (`ID_PERSONNE`, `NOM`, `PRENOM`, `ADRESSE`, `DATE_NAISS`, `EMAIL`, `TELEPHONE`, `PROMOTION`, `STATUT`) VALUES
-(1, 'YOL', 'Ludovic', NULL, '1993-10-01', 'ludovic.yol@gmail.com', NULL, '2016', 'Diplome'),
-(2, 'RECEVEUR', 'Alexandre', '31 avenue de la viste 31180 Rouffiac Tolosan', '1993-11-08', 'alexandre.receveur@yahoo.fr', '0638898577', '2016', 'Diplome'),
-(3, 'GRANDGUILLOTTE', 'Leonore', NULL, '1995-01-17', '', NULL, '2018', 'Etudiant');
+INSERT INTO `o_personne` (`ID_PERSONNE`, `LOGIN`, `PASSWORD`, `NOM`, `PRENOM`, `ADRESSE`, `DATE_NAISS`, `EMAIL`, `TELEPHONE`, `PROMOTION`, `STATUT`) VALUES
+(1, 'lyol', 'lyol', 'YOL', 'Ludovic', NULL, '1993-10-01', 'ludovic.yol@gmail.com', NULL, '2016', 'Diplome'),
+(2, 'arec', 'arec', 'RECEVEUR', 'Alexandre', '31 avenue de la viste 31180 Rouffiac Tolosan', '1993-11-08', 'alexandre.receveur@yahoo.fr', '0638898577', '2016', 'Diplome');
 
 -- --------------------------------------------------------
 
@@ -181,7 +182,7 @@ ALTER TABLE `o_salaire`
 -- AUTO_INCREMENT pour la table `o_emploi`
 --
 ALTER TABLE `o_emploi`
-  MODIFY `ID_EMPLOI` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID_EMPLOI` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `o_entreprise`
 --
@@ -191,7 +192,7 @@ ALTER TABLE `o_entreprise`
 -- AUTO_INCREMENT pour la table `o_personne`
 --
 ALTER TABLE `o_personne`
-  MODIFY `ID_PERSONNE` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `ID_PERSONNE` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT pour la table `o_salaire`
 --
