@@ -47,7 +47,8 @@
     }
 
     function isConnected(){
-        return (isset($_SERVER['HTTP_TOKEN']) && isset($SERVER['HTTP_REMOTE_USER']) && isset($connectedUsers[$SERVER['HTTP_REMOTE_USER']]) && $connectedUsers[$SERVER['HTTP_REMOTE_USER']] == $_SERVER['HTTP_TOKEN']) || (isset($_SERVER['HTTP_TOKEN']) && $_SERVER['HTTP_TOKEN'] == "DEV");
+        return true;
+        // return (isset($_SERVER['HTTP_TOKEN']) && isset($SERVER['HTTP_REMOTE_USER']) && isset($connectedUsers[$SERVER['HTTP_REMOTE_USER']]) && $connectedUsers[$SERVER['HTTP_REMOTE_USER']] == $_SERVER['HTTP_TOKEN']) || (isset($_SERVER['HTTP_TOKEN']) && $_SERVER['HTTP_TOKEN'] == "DEV");
     }
 
 ?>

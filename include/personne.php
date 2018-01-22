@@ -63,24 +63,24 @@
         return $personne; 
     }
 
-    function validerDonnee($personne){
+    function validerPersonne($personne){
         if(!property_exists($personne,'nom')){
             throw new ValidationException("Entite invalide : pas de valeur pour 'nom'");
         } 
     }
 
     function addPersonne($personne, $pdo){ 
-        validerDonnee($personne);
+        validerPersonne($personne);
         $sql = "INSERT INTO o_personne (NOM, PRENOM, ADRESSE, EMAIL, TELEPHONE, PROMOTION, STATUT) VALUES ('". $personne->nom ."', '". $personne->prenom ."', '". $personne->adresse ."', '". $personne->email ."', '". $personne->telephone ."', '". $personne->promotion ."', '". $personne->statut ."');";
         $pdo->exec($sql);
-        return get_personne_by_id($pdo->lastInsertId(), $pdo);
+        return getPersonneById($pdo->lastInsertId(), $pdo);
     }
 
     function updatePersonne($id, $personne, $pdo){
-        validerDonnee($personne);
+        validerPersonne($personne);
         $sql = "UPDATE o_personne SET NOM = '". $personne->nom ."', PRENOM = '". $personne->prenom ."', ADRESSE = '". $personne->adresse ."', EMAIL = '". $personne->email ."', TELEPHONE = '". $personne->telephone ."', PROMOTION = '". $personne->promotion ."', STATUT = '". $personne->statut ."' WHERE id_personne = ".$id;    
         $pdo->exec($sql);
-        return get_personne_by_id($id, $pdo);
+        return getPersonneById($id, $pdo);
     }
 
     function deletePersonneById($id, $pdo) { 

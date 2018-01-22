@@ -1,9 +1,13 @@
 <?php 
 
     require_once 'config.php';
-    require_once 'include/personne.php';
+    
     require_once 'include/manager.php';
     require_once 'include/utils.php';
+
+    require_once 'include/personne.php';
+    require_once 'include/entreprise.php';
+    require_once 'include/emploi.php';
 
     // Vérifier connexion
     if(!isConnected()){
@@ -14,7 +18,7 @@
     $code = 200;
     $value = "";
 
-    $possible_url = array("personne", "entreprise");
+    $possible_url = array("personne", "entreprise", "emploi");
 
     if (isset($_GET["action"]) && in_array($_GET["action"], $possible_url)) { 
         $action = $_GET["action"];
@@ -24,8 +28,12 @@
                 $value = gestionPersonne($pdo);
                 break; 
 
-                case "emploi": 
+                case "entreprise": 
+                $value = gestionEntreprise($pdo);
+                break; 
 
+                case "emploi": 
+                $value = gestionEmploi($pdo);
                 break; 
             } 
         }
